@@ -1,4 +1,4 @@
-extends Node3D
+extends CharacterBody3D
 @onready var spring_arm_pivot = $SpringArmPivot
 @onready var spring_arm = $SpringArmPivot/SpringArm3D
 @onready var armature=$Armature
