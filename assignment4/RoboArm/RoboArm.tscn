@@ -1,0 +1,67 @@
+[gd_scene load_steps=10 format=3 uid="uid://c6hsqm4kjc2vd"]
+
+[ext_resource type="Texture2D" uid="uid://bonwc7hbt4o8v" path="res://stadium_01_4k.exr" id="1_m8fja"]
+[ext_resource type="Script" path="res://camera_select.gd" id="3_282gl"]
+[ext_resource type="Script" path="res://moving_cam.gd" id="4_3vrib"]
+
+[sub_resource type="GDScript" id="GDScript_w1wat"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ff663"]
+panorama = ExtResource("1_m8fja")
+
+[sub_resource type="Sky" id="Sky_haybp"]
+sky_material = SubResource("PanoramaSkyMaterial_ff663")
+
+[sub_resource type="Environment" id="Environment_lbm7i"]
+background_mode = 2
+sky = SubResource("Sky_haybp")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uyomd"]
+render_priority = 3
+transparency = 1
+albedo_color = Color(0.071286, 0.337828, 0.179221, 0.662745)
+metallic = 0.43
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_dbty3"]
+material = SubResource("StandardMaterial3D_uyomd")
+
+[node name="DoublePendulum3d" type="Node3D"]
+script = SubResource("GDScript_w1wat")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.571424, 4.32495)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_lbm7i")
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.340423, 0.403167, -0.849452, 0.0532692, 0.89369, 0.445511, 0.938762, -0.196912, 0.282757, -6.76325, 5.34435, 1.84863)
+
+[node name="CameraSelect" type="Node3D" parent="."]
+transform = Transform3D(0.986115, 0, 0.166063, 0, 1, 0, -0.166063, 0, 0.986115, 1.58501, 2.15531, 1.35115)
+script = ExtResource("3_282gl")
+
+[node name="StaticCam" type="Camera3D" parent="CameraSelect"]
+transform = Transform3D(0.159881, 0, 0.987137, 0, 1, 0, -0.987137, 0, 0.159881, -0.62044, -0.0194352, -1.41852)
+
+[node name="Label3D" type="Label3D" parent="CameraSelect/StaticCam"]
+transform = Transform3D(0.998538, -0.0107351, -0.0530231, 0.0230654, 0.971048, 0.237767, 0.0489354, -0.238641, 0.969876, -0.0332615, -0.244589, -1.05916)
+modulate = Color(0.996078, 0, 0, 1)
+outline_modulate = Color(0.58603, 0.774817, 0.995048, 1)
+text = "Press Spacebar to switch between fixed and moving camera. 
+Use arrow keys to move that camera."
+font_size = 11
+outline_size = 2
+autowrap_mode = 2
+
+[node name="MovingCam" type="Camera3D" parent="CameraSelect"]
+transform = Transform3D(0.869831, 0, 0.49335, 0, 1, 0, -0.49335, 0, 0.869831, 2.59346, -0.0287998, 2.48497)
+current = true
+fov = 78.75
+script = ExtResource("4_3vrib")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(5, 0, 5.96046e-08, 0, 5, 0, -5.96046e-08, 0, 5, -1.19209e-07, -0.0739756, 0)
+extra_cull_margin = 314.08
+custom_aabb = AABB(5, 0, 0, 5, 0, 0)
+mesh = SubResource("PlaneMesh_dbty3")
