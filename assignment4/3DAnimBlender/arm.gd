@@ -4,8 +4,10 @@ extends CharacterBody3D
 @onready var spring_arm = $SpringArmPivot/SpringArm3D
 @onready var armature = $Armature
 @onready var anim_tree = $AnimationTree
+@onready var animation_player = $AnimationPlayer  # Update to match your scene structure
+var is_grabbing: bool = false
 
-const SPEED = 50.0
+const SPEED = 5.0
 const LERP_VAL = 0.15
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -22,6 +24,17 @@ func _unhandled_input(event):
 		spring_arm_pivot.rotate_y(-event.relative.x * 0.005)
 		spring_arm.rotate_x(-event.relative.y * 0.005)
 		spring_arm.rotation.x = clamp(spring_arm.rotation.x, -PI / 4, PI / 4)
+
+func _input(_event):
+	if Input.is_action_pressed("grab"):
+		if not is_grabbing:
+			animation_player.play("grab")
+			is_grabbing = true
+
+	elif Input.is_action_pressed("letgo"):
+		if is_grabbing:
+			animation_player.play("letgo")
+			is_grabbing = false
 
 func _physics_process(delta):
 	# Add the gravity.
