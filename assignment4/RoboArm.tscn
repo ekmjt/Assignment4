@@ -1,0 +1,82 @@
+[gd_scene load_steps=14 format=3 uid="uid://c6hsqm4kjc2vd"]
+
+[ext_resource type="Texture2D" uid="uid://bonwc7hbt4o8v" path="res://stadium_01_4k.exr" id="1_m8fja"]
+[ext_resource type="Script" path="res://camera_select.gd" id="3_282gl"]
+[ext_resource type="Script" path="res://moving_cam.gd" id="4_3vrib"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="4_h8j3a"]
+[ext_resource type="Resource" path="res://terrain/data.hterrain" id="5_wxa22"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="6_cvf36"]
+[ext_resource type="Texture2D" uid="uid://bll4ami0lre0" path="res://grass/RoboArm_slot0_albedo_bump.png" id="7_qh8d1"]
+[ext_resource type="Texture2D" uid="uid://dew1ng56cc36o" path="res://grass/RoboArm_slot0_normal_roughness.png" id="8_3bcm7"]
+
+[sub_resource type="GDScript" id="GDScript_w1wat"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ff663"]
+panorama = ExtResource("1_m8fja")
+
+[sub_resource type="Sky" id="Sky_haybp"]
+sky_material = SubResource("PanoramaSkyMaterial_ff663")
+
+[sub_resource type="Environment" id="Environment_lbm7i"]
+background_mode = 2
+sky = SubResource("Sky_haybp")
+
+[sub_resource type="Resource" id="Resource_5qj6b"]
+script = ExtResource("6_cvf36")
+mode = 0
+textures = [[ExtResource("7_qh8d1")], [ExtResource("8_3bcm7")]]
+
+[node name="DoublePendulum3d" type="Node3D"]
+script = SubResource("GDScript_w1wat")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.571424, 4.32495)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_lbm7i")
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.340423, 0.403167, -0.849452, 0.0532692, 0.89369, 0.445511, 0.938762, -0.196912, 0.282757, -6.76325, 5.34435, 1.84863)
+
+[node name="CameraSelect" type="Node3D" parent="."]
+transform = Transform3D(0.986115, 0, 0.166063, 0, 1, 0, -0.166063, 0, 0.986115, 1.58501, 2.15531, 1.35115)
+script = ExtResource("3_282gl")
+
+[node name="StaticCam" type="Camera3D" parent="CameraSelect"]
+transform = Transform3D(0.159881, 0, 0.987137, 0, 1, 0, -0.987137, 0, 0.159881, -0.62044, -0.0194352, -1.41852)
+
+[node name="Label3D" type="Label3D" parent="CameraSelect/StaticCam"]
+transform = Transform3D(0.998538, -0.0107351, -0.0530231, 0.0230654, 0.971048, 0.237767, 0.0489354, -0.238641, 0.969876, -0.0332615, -0.244589, -1.05916)
+modulate = Color(0.996078, 0, 0, 1)
+outline_modulate = Color(0.58603, 0.774817, 0.995048, 1)
+text = "Press Spacebar to switch between fixed and moving camera. 
+Use arrow keys to move that camera."
+font_size = 11
+outline_size = 2
+autowrap_mode = 2
+
+[node name="MovingCam" type="Camera3D" parent="CameraSelect"]
+transform = Transform3D(0.869831, 0, 0.49335, 0, 1, 0, -0.49335, 0, 0.869831, 2.59346, -0.0287998, 2.48497)
+current = true
+fov = 78.75
+script = ExtResource("4_3vrib")
+
+[node name="HTerrain" type="Node3D" parent="."]
+script = ExtResource("4_h8j3a")
+map_scale = Vector3(0.15, 0.15, 0.15)
+centered = true
+_terrain_data = ExtResource("5_wxa22")
+chunk_size = 32
+collision_enabled = true
+collision_layer = 1
+collision_mask = 1
+shader_type = "Classic4Lite"
+custom_shader = null
+custom_globalmap_shader = null
+texture_set = SubResource("Resource_5qj6b")
+render_layers = 1
+cast_shadow = 1
+shader_params/u_ground_uv_scale = 20
+shader_params/u_depth_blending = true
+shader_params/u_triplanar = null
+shader_params/u_tile_reduction = null
