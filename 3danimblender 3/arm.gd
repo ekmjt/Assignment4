@@ -3,7 +3,6 @@ extends CharacterBody3D
 @onready var camera = $SpringArmPivot
 @onready var spring_arm = $SpringArmPivot/SpringArm3D
 @onready var armature = $Armature
-@onready var anim_tree = $AnimationTree
 @onready var animation_player = $AnimationPlayer
 @onready var skeleton = $Armature/Skeleton3D
 @onready var Ray_Cast = $Armature/RayCast3D
@@ -18,14 +17,17 @@ extends CharacterBody3D
 
 @export_group("Holding Objects")
 @export var throwPower = 7.5
-@export var pullSpeed = 5.0
+@export var pullSpeed = 5.0  # Speed for holding the object in place
 @export var following = 2.5
+@export var pick_up_speed = 0.5  # Speed for picking up the object 
 
 @export_group("Arm")
 @export var mouse = Vector2(0.2, 0.2)
 
 var movDirection: Vector3
 var object_held: RigidBody3D
+var is_animating: bool = false  # Track animation state to avoid conflicts
+var can_grab: bool = false  # Track if object is within range for grabbing
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -39,9 +41,17 @@ func _process(_delta):
 	var inputpath = Input.get_vector("left", "right", "forward", "back")
 	movDirection = (transform.basis * Vector3(inputpath.x, 0, inputpath.y)).normalized()
 
+	# Quit the game when "quit" is pressed
+	if Input.is_action_just_pressed("quit"):
+		get_tree().quit()
+
 	# Jump
 	if Input.is_action_just_pressed("pick") and is_on_floor(): 
 		velocity.y = jumpDist
+
+	# Smoothly move the held object into position
+	if object_held:
+		move_object_toward_target(_delta)
 
 func _physics_process(delta):
 	control_holding_objects()
@@ -66,47 +76,64 @@ func _unhandled_input(event):
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 
 func set_object_held(body):
-	if body is RigidBody3D:
-		object_held = body
+	if body is RigidBody3D and can_grab:
+		is_animating = true
+		animation_player.play("grab")  # Play the grab animation
+		await animation_player.animation_finished  # Wait for the grab animation to finish
+		object_held = body  # Set the object as held after grab animation completes
+		animation_player.play("pickup")  # Play the pickup animation
+		await animation_player.animation_finished  # Wait for the pickup animation to finish
+		is_animating = false
 
-func dropping_object_held():
-	object_held = null
+func move_object_toward_target(delta):
+	var target_position = camera.global_transform.origin + (camera.global_basis * Vector3(0, 0, -following))
+	var lerp_speed = pick_up_speed if is_animating else pullSpeed  # Use pick_up_speed only during animation
+	object_held.global_transform.origin = object_held.global_transform.origin.lerp(target_position, lerp_speed * delta)
 
 func throwing_object_held():
-	var obj = object_held
-	dropping_object_held()
-	obj.apply_central_impulse(-camera.global_basis.z * throwPower * 10)
+	if object_held:
+		is_animating = true
+		animation_player.play("letgo")
+		# Simultaneous throw with animation
+		var throw_direction = -camera.global_transform.basis.z  # Forward direction of the camera
+		object_held.apply_central_impulse(throw_direction * throwPower)  # Apply controlled throw impulse
+		object_held.linear_velocity = throw_direction * pullSpeed  # Add smoother velocity for realism
+		object_held = null  # Release the object
+		is_animating = false
 
 func control_holding_objects():
+	if is_animating:
+		return
+
 	# Throwing Object
 	if Input.is_action_just_pressed("letgo"):
 		if object_held != null:
 			throwing_object_held()
 
-	# Dropping Object
-	if Input.is_action_just_pressed("grab"):
-		if object_held != null:
-			dropping_object_held()
-		elif Ray_Cast.is_colliding():
+	# Picking Up Object
+	elif Input.is_action_just_pressed("grab"):
+		if object_held == null and Ray_Cast.is_colliding() and can_grab:
 			set_object_held(Ray_Cast.get_collider())
 
 	# Object Following
 	if object_held != null:
 		var targetPos = camera.global_transform.origin + (camera.global_basis * Vector3(0, 0, -following))  # Object held in front of arm
-		var objectPos = object_held.global_transform.origin  
-		object_held.linear_velocity = (targetPos - objectPos) * pullSpeed 
+		var objectPos = object_held.global_transform.origin  # Object held position
+		object_held.linear_velocity = (targetPos - objectPos) * pullSpeed  # Smooth transition to final position
 
-
+# Handle when a body enters the grabbing area
 func _on_body_entered(body):
 	if body.name == "Ball":  
 		print("Ball entered grabbing area!")
 		highlight_grabbing_area(true)
+		can_grab = true
 
 # Handle when a body exits the grabbing area
 func _on_body_exited(body):
 	if body.name == "Ball":  
 		print("Ball exited grabbing area!")
 		highlight_grabbing_area(false)
+		can_grab = false
 
 
 func highlight_grabbing_area(enable):
