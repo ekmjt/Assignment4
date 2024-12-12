@@ -1,0 +1,8 @@
+ea4bc82a6ad023ab7ee23ee620429895
+::res://::1734039124
+arm.gd::GDScript::-1::1734038955::0::1::::<>CharacterBody3D<>::
+arm.glb::PackedScene::3294502883904506193::1734007412::1734007424::1::::<><>::
+icon.svg::CompressedTexture2D::8548030750168265125::1734007412::1734007423::1::::<><>::
+play.gd::GDScript::-1::1734007412::0::1::::<>RefCounted<>::
+robot_arm.tscn::PackedScene::9017075994490995842::1734038955::0::1::::<><>::uid://bm648mhyelmcf::::res://arm.glb<>res://play.gd
+world.tscn::PackedScene::7072039013713649955::1734038976::0::1::::<><>::res://arm.gd
