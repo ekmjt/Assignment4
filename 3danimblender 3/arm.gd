@@ -8,6 +8,8 @@ extends CharacterBody3D
 @onready var Ray_Cast = $Armature/RayCast3D
 @onready var grabbing_area = $Armature/GrabbingArea  # Area3D for detecting the ball
 @onready var ball_material = $"../Ball/MeshInstance3D".material_override  # Reference to the ball's material
+@onready var GoalArea = $"../Goal/Area3D"  # Reference to the goal area
+@onready var ball = $"../Ball"  # Reference to the ball node
 
 @export_group("Arm movement")
 @export var ArmSpeed = 5.0
@@ -16,7 +18,7 @@ extends CharacterBody3D
 @export var gravity = 9.8
 
 @export_group("Holding Objects")
-@export var throwPower = 7.5
+@export var throwPower = 50
 @export var pullSpeed = 5.0  # Speed for holding the object in place
 @export var following = 2.5
 @export var pick_up_speed = 0.5  # Speed for picking up the object 
@@ -28,13 +30,17 @@ var movDirection: Vector3
 var object_held: RigidBody3D
 var is_animating: bool = false  # Track animation state to avoid conflicts
 var can_grab: bool = false  # Track if object is within range for grabbing
+var score: int = 0  # Track the player's score
+var initial_ball_position: Vector3
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	initial_ball_position = ball.global_transform.origin
 
 	# Connect Area3D signals
 	grabbing_area.connect("body_entered", Callable(self, "_on_body_entered"))
 	grabbing_area.connect("body_exited", Callable(self, "_on_body_exited"))
+	GoalArea.connect("body_entered", Callable(self, "_on_goal_entered"))  # Connect signal for goal detection
 
 func _process(_delta):
 	# Input Path
@@ -97,9 +103,10 @@ func throwing_object_held():
 		# Simultaneous throw with animation
 		var throw_direction = -camera.global_transform.basis.z  # Forward direction of the camera
 		object_held.apply_central_impulse(throw_direction * throwPower)  # Apply controlled throw impulse
-		object_held.linear_velocity = throw_direction * pullSpeed  # Add smoother velocity for realism
+		object_held.linear_velocity = throw_direction * throwPower  # Add smoother velocity for realism
 		object_held = null  # Release the object
 		is_animating = false
+		reset_ball()  # Reset the ball after throwing
 
 func control_holding_objects():
 	if is_animating:
@@ -135,6 +142,21 @@ func _on_body_exited(body):
 		highlight_grabbing_area(false)
 		can_grab = false
 
+# Handle when the ball enters the goal area
+func _on_goal_entered(body):
+	if body.name == "Ball":
+		score += 1
+		print("Goal! Your score: " + str(score))
+		reset_ball()
+
+func reset_ball():
+	await get_tree().create_timer(1.0).timeout  # Delay for 1 second before resetting
+	ball.global_transform.origin = initial_ball_position  # Reset ball position to starting point
+	ball.linear_velocity = Vector3.ZERO  # Reset ball velocity
+	ball.angular_velocity = Vector3.ZERO  # Reset ball angular velocity
+
+func miss():
+	reset_ball()
 
 func highlight_grabbing_area(enable):
 	if enable:
