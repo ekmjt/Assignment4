@@ -1,14 +1,15 @@
-[gd_scene load_steps=37 format=4 uid="uid://c700pjn84lp4f"]
+[gd_scene load_steps=44 format=4 uid="uid://c700pjn84lp4f"]
 
 [ext_resource type="Script" path="res://arm.gd" id="1_ocdue"]
+[ext_resource type="Texture2D" uid="uid://cvsyd6ecdwh18" path="res://orlando_stadium_4k.exr" id="1_t4n75"]
 [ext_resource type="ArrayMesh" uid="uid://byjksdc8cin4k" path="res://16518_TargetHolder_FBGoalPost_V2_NEW.obj" id="2_mhxn8"]
+[ext_resource type="Script" path="res://path_follow_3d.gd" id="4_hdhya"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fwl0a"]
-sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_rfpbo"]
+panorama = ExtResource("1_t4n75")
 
 [sub_resource type="Sky" id="Sky_0i8xk"]
-sky_material = SubResource("ProceduralSkyMaterial_fwl0a")
+sky_material = SubResource("PanoramaSkyMaterial_rfpbo")
 
 [sub_resource type="Environment" id="Environment_qusxx"]
 background_mode = 2
@@ -516,6 +517,9 @@ _data = {
 "pickup": SubResource("Animation_yg33p")
 }
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mfl5w"]
+albedo_color = Color(0.14902, 0.2, 0, 1)
+
 [sub_resource type="PlaneMesh" id="PlaneMesh_jn17i"]
 size = Vector2(100, 100)
 
@@ -523,6 +527,11 @@ size = Vector2(100, 100)
 data = PackedVector3Array(25, 0, 25, -25, 0, 25, 25, 0, -25, -25, 0, 25, -25, 0, -25, 25, 0, -25)
 
 [sub_resource type="PrismMesh" id="PrismMesh_v8vat"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sam0d"]
+albedo_color = Color(0, 0.305882, 0.333333, 1)
+metallic = 0.38
+metallic_specular = 0.26
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_6181c"]
 data = PackedVector3Array(0, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0, 0.5, 0.5, 0, 0.5, -0.5, 0.5, -0.5, 0.5, 0, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0, 0.5, -0.5, 0, 0.5, 0.5, -0.5, -0.5, -0.5, 0, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
@@ -555,6 +564,7 @@ shader = SubResource("Shader_q0k5a")
 [sub_resource type="SphereShape3D" id="SphereShape3D_okfep"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_beltf"]
+albedo_color = Color(0.591685, 0.248585, 0.0542734, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5qrvc"]
 
@@ -566,11 +576,25 @@ height = 0.6
 [sub_resource type="SphereShape3D" id="SphereShape3D_ov3tb"]
 radius = 0.3
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mni57"]
+albedo_color = Color(0.258824, 0, 0, 1)
+metallic = 1.0
+metallic_specular = 1.0
+
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_n0qat"]
 data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_t8bnu"]
 size = Vector3(3.73779, 1, 3.09641)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f7rse"]
+
+[sub_resource type="Curve3D" id="Curve3D_pm6lo"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 21.1541, 0.108941, -12.4357, 0, 0, 0, 0, 0, 0, 20.8694, 0.180677, 14.6054),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
 
 [node name="World" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0801024, 0)
@@ -611,35 +635,35 @@ bones/1/parent = 0
 bones/1/rest = Transform3D(1, 1.48084e-08, -2.37958e-07, -1.77636e-15, 0.998069, 0.062111, 2.38419e-07, -0.062111, 0.998069, -1.77636e-15, 2.00223, 7.45058e-09)
 bones/1/enabled = true
 bones/1/position = Vector3(-1.77636e-15, 2.00223, 7.45058e-09)
-bones/1/rotation = Quaternion(-0.243747, -9.88734e-08, -4.31165e-08, 0.969839)
+bones/1/rotation = Quaternion(-0.191026, -9.98054e-08, -3.62543e-08, 0.981585)
 bones/1/scale = Vector3(1, 1, 1)
 bones/2/name = "arm2"
 bones/2/parent = 1
 bones/2/rest = Transform3D(1, 1.26248e-15, -2.83937e-14, 1.05879e-21, 0.999013, 0.0444195, 2.84217e-14, -0.0444195, 0.999013, 0, 1.00011, 0)
 bones/2/enabled = true
 bones/2/position = Vector3(0, 1.00011, 0)
-bones/2/rotation = Quaternion(-0.436719, -1.41447e-14, 4.05809e-16, 0.899598)
+bones/2/rotation = Quaternion(-0.454623, -1.16803e-14, -9.88249e-15, 0.890684)
 bones/2/scale = Vector3(1, 1, 1)
 bones/3/name = "armend"
 bones/3/parent = 2
 bones/3/rest = Transform3D(1, -1.13687e-13, -5.6426e-07, -5.63265e-07, -0.0593598, -0.998237, -3.34942e-08, 0.998237, -0.0593598, 0, 1.00177, 1.67638e-08)
 bones/3/enabled = true
 bones/3/position = Vector3(0, 1.00177, 1.67638e-08)
-bones/3/rotation = Quaternion(0.792458, 9.91634e-08, -2.46161e-07, 0.609927)
+bones/3/rotation = Quaternion(0.820622, 6.90984e-08, -2.57616e-07, 0.571471)
 bones/3/scale = Vector3(1, 1, 1)
 bones/4/name = "finger0"
 bones/4/parent = 3
 bones/4/rest = Transform3D(0.707107, -0.707107, -5.06588e-07, -0.707107, -0.707107, -5.02213e-08, -3.227e-07, 3.93724e-07, -1, -2.35287e-15, 5.96046e-08, 1.49198e-10)
 bones/4/enabled = true
 bones/4/position = Vector3(-2.35287e-15, 5.96046e-08, 1.49198e-10)
-bones/4/rotation = Quaternion(0.896694, -0.4416, 0.0281634, -0.0116656)
+bones/4/rotation = Quaternion(0.917241, -0.398253, 0.0073519, -0.0030452)
 bones/4/scale = Vector3(1, 1, 1)
 bones/5/name = "finger1"
 bones/5/parent = 3
 bones/5/rest = Transform3D(0.707107, 0.707107, -5.32026e-07, 0.707107, -0.707107, 3.96846e-08, -3.48138e-07, -4.04261e-07, -1, -2.35287e-15, 5.96046e-08, 1.49198e-10)
 bones/5/enabled = true
 bones/5/position = Vector3(-2.35287e-15, 5.96046e-08, 1.49198e-10)
-bones/5/rotation = Quaternion(0.891099, 0.452365, -0.0334141, -0.0138407)
+bones/5/rotation = Quaternion(0.915967, 0.401142, -0.00872351, -0.00361342)
 bones/5/scale = Vector3(1, 1, 1)
 bones/6/name = "ikarmpole0"
 bones/6/parent = -1
@@ -659,8 +683,8 @@ bones/8/name = "ikarmtarget"
 bones/8/parent = -1
 bones/8/rest = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 4, 0)
 bones/8/enabled = true
-bones/8/position = Vector3(0, 3.12277, -1.31351)
-bones/8/rotation = Quaternion(-0.971279, 0, 0, 0.237943)
+bones/8/position = Vector3(0, 3.22987, -1.19642)
+bones/8/rotation = Quaternion(-0.948624, 0, 0, 0.316406)
 bones/8/scale = Vector3(1, 1, 1)
 
 [node name="Cube_002" type="MeshInstance3D" parent="arm/Armature/Skeleton3D"]
@@ -698,18 +722,35 @@ spring_length = 3.0
 [node name="Camera3D" type="Camera3D" parent="arm/SpringArmPivot/SpringArm3D"]
 transform = Transform3D(0.79164, 0, -0.610988, 0, 1, 0, 0.610988, 0, 0.79164, -2.78144, 5.79684, 2.55856)
 
+[node name="Label3D" type="Label3D" parent="arm/SpringArmPivot/SpringArm3D/Camera3D"]
+transform = Transform3D(1, 0, 2.98023e-08, 0, 1, 0, -2.98023e-08, 0, 1, 0.837364, -0.445225, -1.2555)
+modulate = Color(1, 0, 1, 1)
+text = "Controls :- 
+Movement -> WASD.
+
+Ball changes color when in range.
+
+Press 1 to grab ball.
+Press 2 to jump.
+Press 3 to throw ball."
+font_size = 10
+outline_size = 5
+
 [node name="Floor" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.826103, 0.0133536, 0.00822449)
+material_override = SubResource("StandardMaterial3D_mfl5w")
 mesh = SubResource("PlaneMesh_jn17i")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Floor"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 shape = SubResource("ConcavePolygonShape3D_qtg3t")
 
 [node name="Ramp" type="MeshInstance3D" parent="."]
 transform = Transform3D(30, 0, 0, 0, 5, 0, 0, 0, 5, -8.63015, 2.47854, -0.264803)
 mesh = SubResource("PrismMesh_v8vat")
+surface_material_override/0 = SubResource("StandardMaterial3D_sam0d")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Ramp"]
 
@@ -747,9 +788,11 @@ mesh = SubResource("SphereMesh_8fwry")
 shape = SubResource("SphereShape3D_ov3tb")
 
 [node name="Goal" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.94368, 0)
 
 [node name="GoalMesh" type="MeshInstance3D" parent="Goal"]
 transform = Transform3D(-2.18557e-08, -0.5, 0, -2.18557e-08, 9.55343e-16, 0.5, -0.5, 2.18557e-08, -2.18557e-08, 15, 0, 6)
+material_override = SubResource("StandardMaterial3D_mni57")
 mesh = ExtResource("2_mhxn8")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Goal"]
@@ -760,5 +803,53 @@ shape = SubResource("ConcavePolygonShape3D_n0qat")
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 15, 0, 4)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Goal/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.59172, -3.81811, -3.28423)
+shape = SubResource("BoxShape3D_t8bnu")
+
+[node name="Goal3" type="StaticBody3D" parent="."]
+transform = Transform3D(-0.00340339, 0, 0.999994, 0, 1, 0, -0.999994, 0, -0.00340339, 0, -5.82018, -20.6382)
+
+[node name="GoalMeshx" type="MeshInstance3D" parent="Goal3"]
+transform = Transform3D(-2.18557e-08, -0.5, 0, -2.18557e-08, 9.55343e-16, 0.5, -0.5, 2.18557e-08, -2.18557e-08, 15, 0, 6)
+material_override = SubResource("StandardMaterial3D_mni57")
+mesh = ExtResource("2_mhxn8")
+surface_material_override/0 = SubResource("StandardMaterial3D_f7rse")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Goal3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.6677, 0.731412, 0)
+shape = SubResource("ConcavePolygonShape3D_n0qat")
+
+[node name="Area3D" type="Area3D" parent="Goal3"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 15, 0, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Goal3/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.59172, -3.81811, -3.28423)
+shape = SubResource("BoxShape3D_t8bnu")
+
+[node name="Path3D" type="Path3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.497488, 0)
+curve = SubResource("Curve3D_pm6lo")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
+transform = Transform3D(0.999945, 2.79226e-05, -0.0105261, -9.09495e-13, 0.999996, 0.00265269, 0.0105261, -0.00265255, 0.999941, 21.1541, 0.108941, -12.4357)
+use_model_front = true
+script = ExtResource("4_hdhya")
+
+[node name="Goal2" type="StaticBody3D" parent="Path3D/PathFollow3D"]
+transform = Transform3D(-0.999945, 3.71475e-12, -0.0105261, 2.79226e-05, 0.999997, -0.00265255, 0.0105261, -0.00265269, -0.999941, 18.5712, -1.52043, -0.193874)
+
+[node name="GoalMesh" type="MeshInstance3D" parent="Path3D/PathFollow3D/Goal2"]
+transform = Transform3D(-2.18557e-08, -0.5, 0, -2.18557e-08, 9.55343e-16, 0.5, -0.5, 2.18557e-08, -2.18557e-08, 15, 0, 6)
+material_override = SubResource("StandardMaterial3D_mni57")
+mesh = ExtResource("2_mhxn8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Path3D/PathFollow3D/Goal2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.6677, 0.731412, 0)
+shape = SubResource("ConcavePolygonShape3D_n0qat")
+
+[node name="Area3D" type="Area3D" parent="Path3D/PathFollow3D/Goal2"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 15, 0, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Path3D/PathFollow3D/Goal2/Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.59172, -3.81811, -3.28423)
 shape = SubResource("BoxShape3D_t8bnu")
