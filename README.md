@@ -11,6 +11,8 @@ Gunpreet
 1) Positioning of the camera.
 2) Set the landscape.
 3) Camera configuration: Rotation, field view
+4) setup of secondary objects in game world, and their pathfinding. 
+5) general polishing of the complete project, setting different materials for objects, asding label for controls etc.
    
 
 Jannat
